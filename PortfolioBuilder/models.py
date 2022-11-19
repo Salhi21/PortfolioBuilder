@@ -52,7 +52,7 @@ class Portfolio(models.Model):
 
 class PersonalInfo(models.Model):
     address = models.OneToOneField(Address, on_delete=models.CASCADE)
-    PhoneNumber = models.IntegerField(max_length=100, default="no number")
+    PhoneNumber = models.IntegerField(default="no number")
     birthDate = models.DateField(default=date(2003, 1, 1))
     personaEmail = models.EmailField(max_length=50, unique=True, default="noemail@gmailcom")
     personalWebsite = models.URLField(max_length=200)
@@ -65,7 +65,7 @@ class Awards(models.Model):
     Title = models.CharField(max_length=100, null=False, blank=False)
     AwardDate = models.DateField(default=date(2003, 1, 1))
     Justification = models.FileField(upload_to="files/justifications", null=True, blank=True, max_length=200)
-    Level = models.CharField(max_length=100, choices=RecognitionLevel,
+    Level = models.CharField(max_length=100, choices=RecognitionLevel.choices,
                              default=RecognitionLevel.Low)
     Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
 
