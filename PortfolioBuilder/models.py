@@ -94,3 +94,30 @@ class User(Person):
 
     class Meta:
         db_table = "Users"
+
+
+class References(models.Model):
+    name = models.CharField(max_length=100, null=False, blank=False, default="no name")
+    familyName = models.CharField(max_length=100, null=False, blank=False, default="no family name")
+    PhoneNumber = models.IntegerField(default="no number")
+    personaEmail = models.EmailField(max_length=50, unique=True, default="noemail@gmailcom")
+    workEmail = models.EmailField(max_length=50, unique=True)
+    title = models.CharField(max_length=100, null=False, blank=False)
+    category = models.CharField(max_length=100, choices=AccomplishmentCategory.choices,
+                                default=AccomplishmentCategory.junior)
+    personalWebsite = models.URLField(max_length=200)
+    linkedinProfile = models.URLField(max_length=200)
+    facebookProfile = models.URLField(max_length=200)
+    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "References"
+
+
+class Volunteering(models.Model):
+    label = models.CharField(max_length=100, null=False, blank=False, default="no label")
+    description = models.CharField(max_length=250, null=False, blank=False, default="no description")
+    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "Volunteering"
