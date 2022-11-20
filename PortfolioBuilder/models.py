@@ -121,3 +121,16 @@ class Volunteering(models.Model):
 
     class Meta:
         db_table = "Volunteering"
+
+
+class Testimonials(models.Model):
+    justification1 = models.FileField(upload_to="files/justifications")
+    justification2 = models.FileField(upload_to="files/justifications")
+    justification3 = models.FileField(upload_to="files/justifications")
+    justification4 = models.FileField(upload_to="files/justifications")
+    justification5 = models.FileField(upload_to="files/justifications")
+
+    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "Testimonials"
