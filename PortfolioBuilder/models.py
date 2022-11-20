@@ -101,13 +101,10 @@ class References(models.Model):
     familyName = models.CharField(max_length=100, null=False, blank=False, default="no family name")
     PhoneNumber = models.IntegerField(default="no number")
     personaEmail = models.EmailField(max_length=50, unique=True, default="noemail@gmailcom")
-    workEmail = models.EmailField(max_length=50, unique=True)
     title = models.CharField(max_length=100, null=False, blank=False)
     category = models.CharField(max_length=100, choices=AccomplishmentCategory.choices,
                                 default=AccomplishmentCategory.junior)
-    personalWebsite = models.URLField(max_length=200)
-    linkedinProfile = models.URLField(max_length=200)
-    facebookProfile = models.URLField(max_length=200)
+    justification = models.FileField(upload_to="files/justifications")
     Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
 
     class Meta:
@@ -123,14 +120,3 @@ class Volunteering(models.Model):
         db_table = "Volunteering"
 
 
-class Testimonials(models.Model):
-    justification1 = models.FileField(upload_to="files/justifications")
-    justification2 = models.FileField(upload_to="files/justifications")
-    justification3 = models.FileField(upload_to="files/justifications")
-    justification4 = models.FileField(upload_to="files/justifications")
-    justification5 = models.FileField(upload_to="files/justifications")
-
-    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = "Testimonials"
