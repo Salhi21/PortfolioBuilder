@@ -45,7 +45,23 @@ class Person(models.Model):
         ordering = ['name', 'familyName']
 
 
+class User(Person):
+    jobTitle = models.CharField(max_length=100, default="Unemployed")
+    description = models.CharField(max_length=100, default="No description")
+    statement = models.CharField(max_length=100, default="No statement ")
+
+    class Meta:
+        db_table = "Users"
+
+
+class Admin(Person):
+    class Meta:
+        db_table = "Admins"
+
+
 class Portfolio(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+
     class Meta:
         db_table = "Portfolios"
 
@@ -58,7 +74,7 @@ class PersonalInfo(models.Model):
     personalWebsite = models.URLField(max_length=200)
     linkedinProfile = models.URLField(max_length=200)
     facebookProfile = models.URLField(max_length=200)
-    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    Portfolio = models.OneToOneField(Portfolio, on_delete=models.CASCADE)
 
 
 class Awards(models.Model):
@@ -74,6 +90,7 @@ class Transcripts(models.Model):
     Title = models.CharField(max_length=100, null=False, blank=False)
     Description = models.CharField(max_length=100, null=False, blank=False)
     Link = models.URLField(max_length=200)
+    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
 
 
 class Experiences(models.Model):
@@ -84,16 +101,6 @@ class Experiences(models.Model):
     EndDate = models.DateField(default=date(2003, 1, 1))
     justification = models.FileField(upload_to="files/justifications", null=True, blank=True, max_length=200)
     Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
-
-
-class User(Person):
-    jobTitle = models.CharField(max_length=100, default="Unemployed")
-    description = models.CharField(max_length=100, default="No description")
-    statement = models.CharField(max_length=100, default="No statement ")
-    portfolio = models.OneToOneField(Portfolio, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = "Users"
 
 
 class References(models.Model):
@@ -118,5 +125,3 @@ class Volunteering(models.Model):
 
     class Meta:
         db_table = "Volunteering"
-
-
