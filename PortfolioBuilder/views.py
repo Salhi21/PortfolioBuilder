@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import PersonalInfo
-from .serializers import PersonalInfoSerializer
+from .serializers import PersonalInfoSerializer, PersonSerializer
 
 
 # Create your views here.
@@ -55,3 +55,13 @@ def update_personalInfo(request):
         return Response(status=status.HTTP_202_ACCEPTED)
     return Response(serialzer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['POST'])
+def add_account(request):
+    if request.method == 'POST':
+        Person = PersonSerializer(data=request.data)
+        if Person.is_valid():
+            Person.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(Person.errors, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse({"message": "The method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
