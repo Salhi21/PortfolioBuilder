@@ -1,4 +1,9 @@
+from django.http import JsonResponse
 from django.shortcuts import render
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 from .models import PersonalInfo
 from .serializers import PersonalInfoSerializer
 
@@ -9,10 +14,10 @@ from .serializers import PersonalInfoSerializer
 @api_view(['GET'])
 def get_all_PersonalInfo(request):
     if request.method == 'GET':
-        PersonalInfo = PersonalInfo.objects.all()
-        if not PersonalInfo:
+        personal_info = PersonalInfo.objects.all()
+        if not personal_info:
             return Response(status=status.HTTP_204_NO_CONTENT)
-        serializer = PersonalInfoSerializer(students, many=True)  # convert student objects to json
+        serializer = PersonalInfoSerializer(personal_info, many=True)  # convert student objects to json
         return Response(serializer.data, status=status.HTTP_200_OK)
     return JsonResponse({"message": "The method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
@@ -24,7 +29,7 @@ def add_personalInfo(request):
         if personal_info.is_valid():
             personal_info.save()
             return Response(status=status.HTTP_201_CREATED)
-        return Response(student.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(PersonalInfo.errors, status=status.HTTP_400_BAD_REQUEST)
     return JsonResponse({"message": "The method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
@@ -32,7 +37,7 @@ def add_personalInfo(request):
 def delete_personalInfo(request, id):
     if request.method == 'DELETE':
         try:
-            personalInfo = personalInfo.objects.get(pk=id)
+            personalInfo = PersonalInfo.objects.get(pk=id)
             personalInfo.delete()
             return JsonResponse({"message": "the student has been successfuly removed."},
                                 status=status.HTTP_202_ACCEPTED)
@@ -40,3 +45,13 @@ def delete_personalInfo(request, id):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     return JsonResponse({"message": "The method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+@api_view(['PUT'])
+def update_personalInfo(request):
+    serialzer = PersonalInfoSerializer(PersonalInfo, data=request.data)
+    if serialzer.is_valid():
+        serialzer.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    return Response(serialzer.errors, status=status.HTTP_400_BAD_REQUEST)
+
