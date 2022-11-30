@@ -12,4 +12,4 @@ class PersonalInfoViewSet(viewsets.ModelViewSet):
 class PersonViewSet(viewsets.ModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
-    http_method_name = ['post']
+    http_method_name = ['get', 'post']

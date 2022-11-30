@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import PersonalInfo
+from .models import PersonalInfo, Person
 from .serializers import PersonalInfoSerializer, PersonSerializer
 
 
@@ -55,6 +55,16 @@ def update_personalInfo(request):
         return Response(status=status.HTTP_202_ACCEPTED)
     return Response(serialzer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['GET'])
+def get_all_Person(request):
+    if request.method == 'GET':
+        person = Person.objects.all()
+        if not person:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        serializer = PersonalInfoSerializer(person, many=True)  # convert student objects to json
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return JsonResponse({"message": "The method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['POST'])
 def add_account(request):

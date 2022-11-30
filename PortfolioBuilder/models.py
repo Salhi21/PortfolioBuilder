@@ -40,9 +40,9 @@ class Person(models.Model):
     password = models.CharField(max_length=100, null=False, blank=False, )
     photo = models.ImageField(upload_to="photos/profilePictures", null=True, blank=True, max_length=200)
 
-    class Meta:
-        abstract = True
-        ordering = ['name', 'familyName']
+    #class Meta:
+     #   abstract = True
+      #  ordering = ['name', 'familyName']
 
 
 class User(Person):
