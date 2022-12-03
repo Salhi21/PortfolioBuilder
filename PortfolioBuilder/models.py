@@ -36,18 +36,18 @@ class Address(models.Model):
 class Person(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False, default="no name")
     familyName = models.CharField(max_length=100, null=False, blank=False, default="no family name")
-    workEmail = models.EmailField(max_length=50, unique=True, default="noemail@gmailcom")
-    password = models.CharField(max_length=100, null=False, blank=False, )
+    email = models.EmailField(max_length=50, unique=True, default="noemail@gmailcom")
     photo = models.ImageField(upload_to="photos/profilePictures", null=True, blank=True, max_length=200)
 
-    #class Meta:
-     #   abstract = True
-      #  ordering = ['name', 'familyName']
+    class Meta:
+        abstract = True
+        ordering = ['name', 'familyName']
 
 
 class User(Person):
     jobTitle = models.CharField(max_length=100, default="Unemployed")
     description = models.CharField(max_length=100, default="No description")
+    password = models.CharField(max_length=100,default="PasswordDefault")
     statement = models.CharField(max_length=100, default="No statement ")
 
     class Meta:
@@ -55,15 +55,10 @@ class User(Person):
 
 
 class Admin(Person):
+    specialKey = models.CharField(max_length=100, null=False, blank=False, )
+
     class Meta:
         db_table = "Admins"
-
-
-class Portfolio(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-
-    class Meta:
-        db_table = "Portfolios"
 
 
 class PersonalInfo(models.Model):
@@ -74,7 +69,7 @@ class PersonalInfo(models.Model):
     personalWebsite = models.URLField(max_length=200)
     linkedinProfile = models.URLField(max_length=200)
     facebookProfile = models.URLField(max_length=200)
-    Portfolio = models.OneToOneField(Portfolio, on_delete=models.CASCADE)
+    User = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 class Awards(models.Model):
@@ -83,14 +78,14 @@ class Awards(models.Model):
     Justification = models.FileField(upload_to="files/justifications", null=True, blank=True, max_length=200)
     Level = models.CharField(max_length=100, choices=RecognitionLevel.choices,
                              default=RecognitionLevel.Low)
-    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Transcripts(models.Model):
     Title = models.CharField(max_length=100, null=False, blank=False)
     Description = models.CharField(max_length=100, null=False, blank=False)
     Link = models.URLField(max_length=200)
-    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Experiences(models.Model):
@@ -100,7 +95,7 @@ class Experiences(models.Model):
     StartDate = models.DateField(default=date(2003, 1, 1))
     EndDate = models.DateField(default=date(2003, 1, 1))
     justification = models.FileField(upload_to="files/justifications", null=True, blank=True, max_length=200)
-    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class References(models.Model):
@@ -112,7 +107,7 @@ class References(models.Model):
     category = models.CharField(max_length=100, choices=AccomplishmentCategory.choices,
                                 default=AccomplishmentCategory.junior)
     justification = models.FileField(upload_to="files/justifications")
-    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "References"
@@ -121,7 +116,7 @@ class References(models.Model):
 class Volunteering(models.Model):
     label = models.CharField(max_length=100, null=False, blank=False, default="no label")
     description = models.CharField(max_length=250, null=False, blank=False, default="no description")
-    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "Volunteering"

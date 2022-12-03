@@ -49,11 +49,11 @@ def delete_personalInfo(request, id):
 
 @api_view(['PUT'])
 def update_personalInfo(request):
-    serialzer = PersonalInfoSerializer(PersonalInfo, data=request.data)
-    if serialzer.is_valid():
-        serialzer.save()
+    serializer = PersonalInfoSerializer(PersonalInfo, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
         return Response(status=status.HTTP_202_ACCEPTED)
-    return Response(serialzer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -66,12 +66,3 @@ def get_all_Person(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     return JsonResponse({"message": "The method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-@api_view(['POST'])
-def add_account(request):
-    if request.method == 'POST':
-        Person = PersonSerializer(data=request.data)
-        if Person.is_valid():
-            Person.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(Person.errors, status=status.HTTP_400_BAD_REQUEST)
-    return JsonResponse({"message": "The method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
