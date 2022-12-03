@@ -47,7 +47,7 @@ class Person(models.Model):
 class User(Person):
     jobTitle = models.CharField(max_length=100, default="Unemployed")
     description = models.CharField(max_length=100, default="No description")
-    password = models.CharField(max_length=100,default="PasswordDefault")
+    password = models.CharField(max_length=100, null=False, blank=False)
     statement = models.CharField(max_length=100, default="No statement ")
 
     class Meta:
