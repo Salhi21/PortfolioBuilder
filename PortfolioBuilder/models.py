@@ -65,7 +65,7 @@ class PersonalInfo(models.Model):
     address = models.OneToOneField(Address, on_delete=models.CASCADE)
     PhoneNumber = models.IntegerField(default="no number")
     birthDate = models.DateField(default=date(2003, 1, 1))
-    personaEmail = models.EmailField(max_length=50, unique=True, default="noemail@gmailcom")
+    personalEmail = models.EmailField(max_length=50, unique=True, default="noemail@gmailcom")
     personalWebsite = models.URLField(max_length=200)
     linkedinProfile = models.URLField(max_length=200)
     facebookProfile = models.URLField(max_length=200)
