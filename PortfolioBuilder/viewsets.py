@@ -1,3 +1,6 @@
+from django.http import HttpResponse
+from django.shortcuts import render
+
 from .models import *
 from rest_framework import viewsets
 from .serializers import *
@@ -33,7 +36,6 @@ class AdminViewSet(viewsets.ModelViewSet):
     http_method_name = ['get', 'post', 'put', 'delete', 'patch']
 
 
-
 class AwardsViewSet(viewsets.ModelViewSet):
     queryset = Awards.objects.all()
     serializer_class = AwardsSerializer
@@ -62,3 +64,5 @@ class VolunteeringViewSet(viewsets.ModelViewSet):
     queryset = Volunteering.objects.all()
     serializer_class = VolunteeringSerializer
     http_method_name = ['get', 'post', 'put', 'delete', 'patch']
+
+

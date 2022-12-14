@@ -1,10 +1,13 @@
-from django.http import JsonResponse
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from .models import *
+from django.shortcuts import render
+from django.views import View
 from .serializers import *
 
 # Create your views here.
@@ -452,6 +455,7 @@ def get_update_or_delete_reference(request, id):
     except references.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+
 @api_view(['GET'])
 def get_all_volunteering(request):
     if request.method == 'GET':
@@ -485,7 +489,7 @@ def get_update_or_delete_reference(request, id):
 
         elif request.method == 'PUT':
             serialzer = VolunteeringSerializer(volunteering,
-                                       data=request.data)  # get group informations from the request and update the instance of group geted by nid from the DB.
+                                               data=request.data)  # get group informations from the request and update the instance of group geted by nid from the DB.
             if serialzer.is_valid():
                 serialzer.save()
                 return Response(status=status.HTTP_202_ACCEPTED)
@@ -498,3 +502,38 @@ def get_update_or_delete_reference(request, id):
         return JsonResponse({"message": "The method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     except volunteering.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class Index(View):
+    template = 'index.html'
+
+    # login_url = '/login/'
+
+    def get(self, request):
+        return render(request, self.template)
+
+
+class register(View):
+    template = 'register.html'
+
+    def get(self, request):
+        return render(request, self.template)
+
+
+class Login(View):
+    template = 'login.html'
+
+    def get(self, request):
+        form = AuthenticationForm()
+        return render(request, self.template, {'form': form})
+
+    def post(self, request):
+        form = AuthenticationForm(request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect('/')
+        else:
+            return render(request, self.template, {'form': form})

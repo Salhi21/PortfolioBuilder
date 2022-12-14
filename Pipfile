@@ -5,9 +5,13 @@ name = "pypi"
 
 [packages]
 django = "*"
-pillow = "*"
+pillow = "==9.3.0"
 postgres = "*"
 djangorestframework = "*"
+css = "*"
+docs = "*"
+howto = "*"
+static = "*"
 
 [dev-packages]
 
